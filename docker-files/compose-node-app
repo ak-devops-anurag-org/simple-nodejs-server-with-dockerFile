@@ -1,0 +1,30 @@
+## run command - docker compose up -d (will create and start the container in detached mode)
+
+#version: "3.8"  # Specifies the version of Docker Compose file format
+
+services:
+  # 'node-c1' is the name of the service in Docker Compose.
+  # It's like a nickname for this group of settings.
+  # It doesn't have to match the container name, but it often does for clarity.
+  node-service:
+  
+    # This is the Docker image to use for the container.
+    # If the image is not present locally, Docker will pull it from the registry.
+    image: akdevanurag/node-distroless-img:dev
+
+    # This sets a custom name for the container (like --name in docker run)
+    container_name: node-c1
+
+    # Maps port 8080 on the host to port 8080 inside the container
+    # (same as -p 8080:8080 in docker run)
+    ports:
+      - "8080:8080"
+
+    # Keeps STDIN open even if not attached (same as -i in docker run)
+    #stdin_open: true
+
+    # Allocates a pseudo-TTY (same as -t in docker run)
+    #tty: true
+
+    # Automatically restarts the container if it stops, unless you stop it manually
+    restart: unless-stopped
