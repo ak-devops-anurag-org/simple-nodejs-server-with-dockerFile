@@ -14,7 +14,7 @@ COPY package*.json ./
 # Install production dependencies only
 # - `npm ci` (ci - Clean Install) ensures clean and fast installation
 # - `--omit=dev` skips dev dependencies (like testing, linting tools)
-RUN npm ci --omit=dev
+RUN npm install
 
 # Now copy the rest of your application code
 COPY . .

@@ -1,35 +1,37 @@
-# -------------------- 
-# Stage 1: Build Stage 
-# -------------------- 
+# --------------------
+# Stage 1: Build Stage
+# --------------------
 FROM node:current-slim AS build
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and install dependencies
+# Install dependencies separately to leverage caching
 COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the source code
+# Copy source code
 COPY . .
 
-# Build the app (e.g., create a production build for a React app)
+# Build the production-ready static files
 RUN npm run build
 
 # ----------------------------
-# Stage 2: Production Stage (Distroless)
+# Stage 2: Production Stage
 # ----------------------------
-FROM gcr.io/distroless/nodejs22-debian12
+FROM nginx:stable-alpine AS production
 
-# Set the working directory in the distroless image
-WORKDIR /app
+# Remove default nginx static assets
+RUN rm -rf /usr/share/nginx/html/*
 
-# Copy the build files from the build stage
-COPY --from=build /app/dist /app
+# Copy built assets from build stage
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Expose the port your app will listen on (e.g., 8080)
-EXPOSE 8080
+# Copy custom nginx config if you have one (optional)
+# COPY nginx.conf /etc/nginx/nginx.conf
 
-# Run the app
-CMD ["app.js"]  # or specify the entry point for your app
-    
+# Expose port 80 (HTTP)
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]

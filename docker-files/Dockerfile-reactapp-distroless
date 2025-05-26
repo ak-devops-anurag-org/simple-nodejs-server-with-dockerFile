@@ -31,5 +31,5 @@ COPY --from=build /app/dist /app
 EXPOSE 8080
 
 # Run the app
-CMD ["app.js"]  # or specify the entry point for your app
+CMD ["app.js"]  
     

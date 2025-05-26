@@ -1,0 +1,49 @@
+trigger:
+  branches:
+    include:
+      - main  # or your deployment branch
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  appName: 'akreactappserviceazuredevops'
+  resourceGroup: 'Anurag-rg'
+  packageDir: '$(System.DefaultWorkingDirectory)'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'  # Or your Node version
+  displayName: 'Use Node.js'
+
+- script: |
+    npm install
+    npm run build   # Optional if you don't use `vite build`
+  displayName: 'Install dependencies and build'
+
+# (Optional) Archive artifacts if needed
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(packageDir)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
+    replaceExistingArchive: true
+  displayName: 'Archive app'
+
+# Publish artifact (optional)
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/app.zip'
+    ArtifactName: 'drop'
+  displayName: 'Publish artifact'
+
+# Deploy to Azure App Service
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'DevOps-002'
+    appType: 'webAppLinux'  # use 'webApp' if App Service is on Windows
+    appName: '$(appName)'
+    package: '$(Build.ArtifactStagingDirectory)/app.zip'
+  displayName: 'Deploy to Azure Web App'
