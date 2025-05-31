@@ -1,12 +1,27 @@
-# React + Vite
+# React App with Azure DevOps CI/CD
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple React application with Continuous Integration and Continuous Deployment (CI/CD) implemented using **Azure DevOps**.
 
-Currently, two official plugins are available:
+## 🚀 Project Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project is a basic React application designed to demonstrate modern DevOps practices using Azure DevOps pipelines. It includes automated build, test, and deployment workflows.
 
-## Expanding the ESLint configuration
+## 🛠️ Technologies Used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React** (Frontend Library)
+- **Azure DevOps** (CI/CD Pipeline)
+- **Node.js** (Runtime Environment)
+- **Yarn / npm** (Package Management)
+
+## ⚙️ CI/CD with Azure DevOps
+
+This project includes a CI/CD pipeline configured in Azure DevOps that performs the following:
+
+- **CI (Continuous Integration)**:
+  - Installs dependencies
+  - Runs tests
+  - Builds the React app
+
+- **CD (Continuous Deployment)**:
+  - Automatically deploys the built application to the specified environment (e.g., Azure App Service or Static Web App)
+
