@@ -1,4 +1,4 @@
-# React App with Azure DevOps CI/CD (Updated)
+# React App with Azure DevOps CI/CD (Updated - v2.0)
 
 A simple React application with Continuous Integration and Continuous Deployment (CI/CD) implemented using **Azure DevOps**.
 
