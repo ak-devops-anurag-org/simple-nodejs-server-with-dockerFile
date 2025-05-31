@@ -40,8 +40,8 @@ steps:
 
 - task: AzureWebApp@1
   inputs:
-    azureSubscription: 'DevOps-002'
-    appType: 'webAppLinux'  # change to 'webApp' if using Windows App Service
+    azureSubscription: 'react-app-service-connection'  # <-- use your service connection name here!
+    appType: 'webAppLinux'
     appName: '$(appName)'
     package: '$(Build.ArtifactStagingDirectory)/app.zip'
   displayName: 'Deploy to Azure Web App'
