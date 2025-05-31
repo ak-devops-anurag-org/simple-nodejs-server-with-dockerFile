@@ -7,7 +7,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  appName: 'akreactappserviceazuredevops'
+  appName: 'reactappservicewithcicd'
   resourceGroup: 'Anurag-rg'
   buildDir: 'dist'  # ✅ for Vite
   packageDir: '$(System.DefaultWorkingDirectory)'
