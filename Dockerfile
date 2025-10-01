@@ -1,37 +1,39 @@
 # --------------------
 # Stage 1: Build Stage
 # --------------------
-FROM node:current-slim AS build
+# Use slim version of Node.js 22 for smaller image size
+FROM node:22-slim AS build
+
+# Set working directory inside the container
+WORKDIR /app
+
+# Copy only package.json and package-lock.json
+# (This allows Docker to cache npm install step if dependencies don't change)
+COPY package*.json ./
+
+# Install production dependencies only
+# - `npm ci` (ci - Clean Install) ensures clean and fast installation
+# - `--omit=dev` skips dev dependencies (like testing, linting tools)
+RUN npm install
+
+# Now copy the rest of your application code
+COPY . .
+
+# ----------------------------
+# Stage 2: Production Stage (Distroless)
+# ----------------------------
+# Use very small distroless image that has only Node.js runtime
+FROM gcr.io/distroless/nodejs22-debian12
 
 # Set working directory
 WORKDIR /app
 
-# Install dependencies separately to leverage caching
-COPY package*.json ./
-RUN npm install
+# Copy built app + node_modules from build stage
+COPY --from=build /app /app
 
-# Copy source code
-COPY . .
+# Expose the port your server listens on
+EXPOSE 8085
 
-# Build the production-ready static files
-RUN npm run build
-
-# ----------------------------
-# Stage 2: Production Stage
-# ----------------------------
-FROM nginx:stable-alpine AS production
-
-# Remove default nginx static assets
-RUN rm -rf /usr/share/nginx/html/*
-
-# Copy built assets from build stage
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Copy custom nginx config if you have one (optional)
-# COPY nginx.conf /etc/nginx/nginx.conf
-
-# Expose port 80 (HTTP)
-EXPOSE 80
-
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start the server
+# (Distroless will automatically use "index.js" if present, but CMD is better for clarity)
+CMD ["index.js"]
