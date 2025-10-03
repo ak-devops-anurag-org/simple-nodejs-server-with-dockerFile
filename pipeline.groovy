@@ -38,10 +38,13 @@
 //                   usernameVariable: "dockerHubUsername", 
 //                   passwordVariable: "dockerHubPass")]) 
 //                   {
-//                     sh "docker login -u ${dockerHubUsername} -p ${dockerHubPass}"
-//                     sh "docker image tag node-img ${dockerHubUsername}/simple-node-img-jenkins:latest"
-//                     sh "docker push ${dockerHubUsername}/simple-node-img-jenkins:latest"
-//                 }
+//                     // sh "docker login -u ${dockerHubUsername} -p ${dockerHubPass}"
+//                     sh """
+//                       echo "$dockerHubPass" | docker login -u "$dockerHubUsername" --password-stdin
+//                       docker image tag node-img ${dockerHubUsername}/simple-node-img-jenkins:latest
+//                       docker push ${dockerHubUsername}/simple-node-img-jenkins:latest
+//                     """
+//                   }
 //             }
 //         }
 

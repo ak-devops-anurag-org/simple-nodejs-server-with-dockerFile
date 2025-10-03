@@ -5,7 +5,7 @@ services:
     # build:
     #   context: .
     #   dockerfile: Dockerfile                          # Optional if your Dockerfile is named 'Dockerfile'
-    image: devakanurag/simple-node-img-jenkins:latest   # Image will be tagged locally as "node-img"
+    image: akdevanurag/simple-node-img-jenkins:latest   # Image will be tagged locally as "node-img"
     container_name: server                              # Custom container name
     ports:
       - "8085:8085"
