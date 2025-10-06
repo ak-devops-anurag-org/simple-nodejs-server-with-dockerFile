@@ -25,12 +25,10 @@ pipeline {
 
         stage('Clone Repo') {
             steps {
-                withCredentials([string(credentialsId: 'repoUrl', variable: 'repoURL')]) { 
-                    echo "My repoURL text is '${repoURL}'"
-                    
+                withCredentials([string(credentialsId: 'repoUrl', variable: 'repoURL')]) {                  
                     script {
-                        cloneRepo(repoURL, params.GIT_BRANCH)
-                        // cloneRepo(env.REPO_URL, params.GIT_BRANCH)
+                        // cloneRepo(repoURL, params.GIT_BRANCH)
+                        cloneRepo(env.REPO_URL, params.GIT_BRANCH)
                     }
                 }
             }
@@ -61,14 +59,13 @@ pipeline {
                     credentialsId: "dockerHubCreds", 
                     usernameVariable: "dockerHubUsername", 
                     passwordVariable: "dockerHubPass")]) {
-                    sh """
+                    sh '''
                         echo "$dockerHubPass" | docker login -u "$dockerHubUsername" --password-stdin
                         docker push ${dockerHubUsername}/${IMAGE_NAME}:${IMAGE_TAG}
-                    """
+                    '''
                 }
             }
         }
-
 
         stage('Deploy Container') {
             when {
