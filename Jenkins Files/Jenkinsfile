@@ -3,12 +3,18 @@
 pipeline {
     agent any
 
+    // =========================
+    // 1️⃣ PARAMETERS BLOCK
+    // =========================
     parameters {
         string(name: 'GIT_BRANCH', defaultValue: 'dev', description: 'Git branch to clone')
         choice(name: 'DEPLOY_ENV', choices: ['dev', 'qa', 'prod'], description: 'Select deployment environment')
         booleanParam(name: 'PUSH_TO_DOCKERHUB', defaultValue: true, description: 'Push image to Docker Hub?')
     }
 
+    // =========================
+    // 2️⃣ ENVIRONMENT VARIABLES
+    // =========================
     environment {
         REPO_URL = 'https://github.com/ak-devops-anurag-org/simple-nodejs-server-with-dockerFile.git'
         IMAGE_NAME = 'simple-node-img-jenkins'
@@ -19,7 +25,7 @@ pipeline {
     stages {
         stage('Hello') {
             steps {
-                echo "👋 Hi! - Deploying for environment: ${params.DEPLOY_ENV}"
+                echo "👋 Hello World - Deploying for environment: ${params.DEPLOY_ENV}"
             }
         }
 
@@ -36,9 +42,9 @@ pipeline {
             }
         }
 
+
         stage('Who am I') {
             steps {
-                echo "Current users"
                 sh 'whoami'
             }
         }
@@ -51,6 +57,9 @@ pipeline {
             }
         }
 
+        // =========================
+        // 3️⃣ CONDITIONAL EXECUTION
+        // =========================
         stage('Push to Docker Hub') {
             when {
                 expression { return params.PUSH_TO_DOCKERHUB }
@@ -69,7 +78,9 @@ pipeline {
             }
         }
 
-
+        // =========================
+        // 4️⃣ DEPLOYMENT STAGE
+        // =========================
         stage('Deploy Container') {
             when {
                 anyOf {
@@ -84,6 +95,9 @@ pipeline {
         }
     }
 
+    // =========================
+    // 5️⃣ POST BLOCK
+    // =========================
     post {
         always {
             echo '📦 Cleaning workspace...'
