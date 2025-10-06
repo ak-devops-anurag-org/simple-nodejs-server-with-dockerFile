@@ -1,0 +1,35 @@
+# Local TF state
+.terraform/
+
+# Crash log files
+crash.log
+
+# Ignore tfvars files which may contain sensitive data
+*.tfvars
+terraform.tfvars
+terraform.tfvars.user
+
+# Override.tfvars for local tests
+override.tf
+override.tf.json
+
+# Terraform state
+*.tfstate
+*.tfstate.*
+
+# Terraform plan output
+*.tfplan
+
+# Editor directories and files
+.vscode/
+*.swp
+*.swo
+*.bak
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore keys
+id_rsa
+id_rsa.pub
